@@ -1,0 +1,37 @@
+name: ImeOnCursor
+options:
+  bundleIdPrefix: com.k-ya
+  deploymentTarget:
+    macOS: "13.0"
+  xcodeVersion: "15"
+  generateEmptyDirectories: true
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "13.0"
+    ENABLE_HARDENED_RUNTIME: YES
+    ENABLE_APP_SANDBOX: NO
+targets:
+  ImeOnCursor:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/ImeOnCursor
+    resources:
+      - path: Resources
+    info:
+      path: Resources/Info.plist
+      properties:
+        LSUIElement: true
+        NSAccessibilityUsageDescription: "マウス位置をグローバルに追跡するためにアクセシビリティが必要です"
+        LSMinimumSystemVersion: "13.0"
+        CFBundleExecutable: "$(EXECUTABLE_NAME)"
+        CFBundlePackageType: APPL
+    entitlements:
+      path: ImeOnCursor.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.k-ya.ImeOnCursor
