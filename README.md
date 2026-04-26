@@ -1,4 +1,4 @@
-# ImeOnCursor
+# BezelHue
 
 macOS のメニューバーアプリ。IME（入力ソース）を切り替えたとき、画面端にカラー帯を表示して現在の入力ソースを視覚的に通知します。
 
@@ -21,10 +21,10 @@ brew install xcodegen
 xcodegen generate
 
 # コマンドラインでビルド
-xcodebuild build -project ImeOnCursor.xcodeproj -scheme ImeOnCursor -configuration Release
+xcodebuild build -project BezelHue.xcodeproj -scheme BezelHue -configuration Release
 
 # または Xcode で開く
-open ImeOnCursor.xcodeproj
+open BezelHue.xcodeproj
 ```
 
 > **Note**: `project.yml` を編集した場合は `xcodegen generate` を再実行してください。ソースコードのみの変更であれば不要です。
@@ -58,10 +58,10 @@ open ImeOnCursor.xcodeproj
 ## プロジェクト構成
 
 ```
-ime-on-cursor/
+$ROOT/
 ├── project.yml                        # XcodeGen 設定
-├── ImeOnCursor.entitlements
-├── Sources/ImeOnCursor/
+├── BezelHue.entitlements
+├── Sources/BezelHue/
 │   ├── App.swift                      # エントリーポイント
 │   ├── AppDelegate.swift              # コンポーネント初期化・協調
 │   ├── InputSource/

@@ -1,4 +1,4 @@
-name: ImeOnCursor
+name: BezelHue
 options:
   bundleIdPrefix: com.k-ya
   deploymentTarget:
@@ -13,11 +13,11 @@ settings:
     ENABLE_HARDENED_RUNTIME: YES
     ENABLE_APP_SANDBOX: NO
 targets:
-  ImeOnCursor:
+  BezelHue:
     type: application
     platform: macOS
     sources:
-      - path: Sources/ImeOnCursor
+      - path: Sources/BezelHue
     resources:
       - path: Resources
     info:
@@ -29,18 +29,18 @@ targets:
         CFBundleExecutable: "$(EXECUTABLE_NAME)"
         CFBundlePackageType: APPL
     entitlements:
-      path: ImeOnCursor.entitlements
+      path: BezelHue.entitlements
       properties:
         com.apple.security.app-sandbox: false
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.k-ya.ImeOnCursor
+        PRODUCT_BUNDLE_IDENTIFIER: com.fum1h1ro.BezelHue
 
 schemes:
-  ImeOnCursor:
+  BezelHue:
     build:
       targets:
-        ImeOnCursor: all
+        BezelHue: all
     run:
       config: Debug
     archive:
