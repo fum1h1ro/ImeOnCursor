@@ -35,3 +35,13 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.k-ya.ImeOnCursor
+
+schemes:
+  ImeOnCursor:
+    build:
+      targets:
+        ImeOnCursor: all
+    run:
+      config: Debug
+    archive:
+      config: Release

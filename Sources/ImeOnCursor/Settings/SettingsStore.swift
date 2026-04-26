@@ -1,3 +1,4 @@
+import AppKit
 import Combine
 import Foundation
 
@@ -44,9 +45,17 @@ final class SettingsStore: ObservableObject {
     static let shared = SettingsStore()
 
     @Published private(set) var modes: [String: DisplayMode] = [:]
+    @Published private(set) var bandEnabled: Bool = false
+    @Published private(set) var bandPositions: Set<BandPosition> = [.top]
+    @Published private(set) var bandThickness: CGFloat = 4
+    @Published private(set) var bandColors: [String: String] = [:]
 
     private let defaults = UserDefaults.standard
     private let storageKey = "inputSourceDisplayModes"
+    private let bandEnabledKey = "bandEnabled"
+    private let bandPositionsKey = "inputSourceBandPositions"
+    private let bandThicknessKey = "inputSourceBandThickness"
+    private let bandColorsKey = "inputSourceBandColors"
 
     init() {
         load()
@@ -61,15 +70,60 @@ final class SettingsStore: ObservableObject {
         save()
     }
 
+    func setBandEnabled(_ enabled: Bool) {
+        bandEnabled = enabled
+        defaults.set(enabled, forKey: bandEnabledKey)
+    }
+
+    func setBandPositions(_ positions: Set<BandPosition>) {
+        bandPositions = positions
+        defaults.set(positions.map { $0.rawValue }, forKey: bandPositionsKey)
+    }
+
+    func setBandThickness(_ thickness: CGFloat) {
+        bandThickness = thickness
+        defaults.set(Double(thickness), forKey: bandThicknessKey)
+    }
+
+    func bandColor(for sourceID: String) -> NSColor? {
+        guard let hex = bandColors[sourceID] else { return nil }
+        return NSColor(hexRGB: hex)
+    }
+
+    func setBandColor(_ color: NSColor?, for sourceID: String) {
+        if let color {
+            bandColors[sourceID] = color.hexRGBString
+        } else {
+            bandColors.removeValue(forKey: sourceID)
+        }
+        saveBandColors()
+    }
+
     private func load() {
-        guard let data = defaults.data(forKey: storageKey),
-              let decoded = try? JSONDecoder().decode([String: DisplayMode].self, from: data)
-        else { return }
-        modes = decoded
+        if let data = defaults.data(forKey: storageKey),
+           let decoded = try? JSONDecoder().decode([String: DisplayMode].self, from: data) {
+            modes = decoded
+        }
+        bandEnabled = defaults.bool(forKey: bandEnabledKey)
+        if let raw = defaults.array(forKey: bandPositionsKey) as? [String] {
+            let decoded = Set(raw.compactMap { BandPosition(rawValue: $0) })
+            if !decoded.isEmpty { bandPositions = decoded }
+        }
+        let savedThickness = defaults.double(forKey: bandThicknessKey)
+        if savedThickness > 0 { bandThickness = CGFloat(savedThickness) }
+        if let data = defaults.data(forKey: bandColorsKey),
+           let decoded = try? JSONDecoder().decode([String: String].self, from: data) {
+            bandColors = decoded
+        }
     }
 
     private func save() {
         guard let data = try? JSONEncoder().encode(modes) else { return }
         defaults.set(data, forKey: storageKey)
+    }
+
+    private func saveBandColors() {
+        guard let data = try? JSONEncoder().encode(bandColors) else { return }
+        defaults.set(data, forKey: bandColorsKey)
     }
 }
