@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "WebSearch",
-      "Bash(xcodebuild build:*)",
-      "Bash(xcodebuild:*)"
-    ]
-  }
-}
